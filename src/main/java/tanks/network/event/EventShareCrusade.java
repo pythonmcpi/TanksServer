@@ -6,6 +6,7 @@ import tanks.gui.ChatMessage;
 import tanks.gui.screen.ScreenPartyHost;
 import tanks.gui.screen.ScreenPartyLobby;
 import tanks.network.NetworkUtils;
+import tanks.network.ServerHandler;
 
 public class EventShareCrusade extends PersonalEvent
 {
@@ -29,28 +30,8 @@ public class EventShareCrusade extends PersonalEvent
 	{		
 		if (this.clientID != null)
 		{
-			Player p = null;
-
-			for (Player pl: Game.players)
-			{
-				if (pl.clientID.equals(this.clientID))
-				{
-					p = pl;
-					break;
-				}
-			}
-
-			this.username = p.username;
-
-			ScreenPartyHost.activeScreen.sharedCrusades.add(new ScreenPartyHost.SharedCrusade(this.crusade, this.name, this.username));
-
-			Game.eventsOut.add(this);
-
-			String s = "\u00A7200000200255" + p.username + " has shared the crusade " + this.name.replace("_", " ") + "\u00A7000000000255";
-
-			Drawing.drawing.playGlobalSound("join.ogg", 1.5f);
-			ScreenPartyHost.chat.add(0, new ChatMessage(s));
-			Game.eventsOut.add(new EventChat(s));
+			String s = "\u00A7255000000255Crusades may not be shared in a Fortress Wars lobby.";
+			NetworkUtils.sendEventToClient(new EventChat(s), this.clientID);
 		}
 		else
 		{

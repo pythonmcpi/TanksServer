@@ -216,7 +216,8 @@ public class ChatBox extends TextBox
 			drawing.setColor(0, 0, 0);
 			drawing.setInterfaceFontSize(this.sizeY * 0.6);
 
-			String name = this.defaultTextColor + Game.player.username;
+			//String name = this.defaultTextColor + Game.player.username;
+			String name = "[SERVER]";
 			String s = name + ": \u00a7000000000255" + this.inputText + "\u00a7127127127255_";
 
 			double limit = Drawing.drawing.interfaceSizeX - 80;

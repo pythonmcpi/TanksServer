@@ -80,7 +80,7 @@ public class Tanks
                 {
                     // Creates and configures the LWJGL window.
                     Game.game.window = new LWJGLWindow(
-                            "Tanks",
+                            "Tanks: Fortress Wars",
                             1400, 900 + Drawing.drawing.statsHeight,
                             Game.absoluteDepthBase,
                             new GameUpdater(), new GameDrawer(), new GameWindowHandler(),
@@ -202,7 +202,7 @@ public class Tanks
         jd.add(scroll);
         jd.pack();
         jd.setVisible(true);
-        jd.setTitle("Tanks");
+        jd.setTitle("Tanks: Fortress Wars");
 
         e.printStackTrace();
     }

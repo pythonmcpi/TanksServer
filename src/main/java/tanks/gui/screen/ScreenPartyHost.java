@@ -2,6 +2,7 @@ package tanks.gui.screen;
 
 import tanks.*;
 import tanks.network.ServerHandler;
+import tanks.network.event.EventChat;
 import tanks.network.event.EventPlayerChat;
 import tanks.generator.LevelGeneratorVersus;
 import tanks.gui.Button;
@@ -44,14 +45,6 @@ public class ScreenPartyHost extends Screen
     public SynchronizedList<SharedLevel> sharedLevels = new SynchronizedList<>();
     public SynchronizedList<SharedCrusade> sharedCrusades = new SynchronizedList<>();
 
-    Button newLevel = new Button(this.centerX + 190, this.centerY - 250, this.objWidth, this.objHeight, "Random co-op", () ->
-    {
-        Game.cleanUp();
-        Game.loadRandomLevel();
-        Game.screen = new ScreenGame();
-    }
-            , "Generate a random level to play");
-
     Button nextUsernamePage = new Button(this.centerX - 190,
             this.centerY + username_y_offset + username_spacing * (1 + entries_per_page), 300, 30, "Next page", () -> usernamePage++
     );
@@ -60,39 +53,7 @@ public class ScreenPartyHost extends Screen
             300, 30, "Previous page", () -> usernamePage--
     );
 
-    Button versus = new Button(this.centerX + 190, this.centerY - 190, this.objWidth, this.objHeight, "Random versus", () ->
-    {
-        Game.cleanUp();
-        String s = LevelGeneratorVersus.generateLevelString();
-        Level l = new Level(s);
-        l.loadLevel();
-        ScreenGame.versus = true;
-
-        Game.screen = new ScreenGame();
-    }
-            , "Fight other players in this party---in a randomly generated level");
-
-    Button crusades = new Button(this.centerX + 190, this.centerY - 130, this.objWidth, this.objHeight, "Crusades", () ->
-    {
-        if (Crusade.currentCrusade == null)
-            Game.screen = new ScreenPartyCrusades();
-        else
-            Game.screen = new ScreenPartyResumeCrusade();
-    },
-            "Fight battles in an order,---and see how long you can survive!");
-
-    Button minigames = new Button(this.centerX + 190, this.centerY - 70, this.objWidth, this.objHeight, "Minigames", () ->
-    {
-        Game.screen = new ScreenMinigames();
-    },
-            "Play Tanks in new ways!");
-
-    Button myLevels = new Button(this.centerX + 190, this.centerY - 10, this.objWidth, this.objHeight, "My levels", () -> Game.screen = new ScreenPlaySavedLevels(),
-            "Play levels you have created");
-
-    Button share = new Button(this.centerX + 190, this.centerY + 80, this.objWidth, this.objHeight, "Upload", () -> Game.screen = new ScreenShareSelect());
-
-    Button shared = new Button(this.centerX + 190, this.centerY + 140, this.objWidth, this.objHeight, "Download", () -> Game.screen = new ScreenSharedSummary(sharedLevels, sharedCrusades));
+    Button shared = new Button(this.centerX + 190, this.centerY - 250, this.objWidth, this.objHeight, "Preview Uploaded Forts", () -> Game.screen = new ScreenSharedSummary(sharedLevels, sharedCrusades));
 
     Button options = new Button(this.centerX - 190, this.centerY + 210, this.objWidth, this.objHeight, "Options", () -> Game.screen = new ScreenOptions());
 
@@ -103,7 +64,7 @@ public class ScreenPartyHost extends Screen
         Game.screen = s;
     });
 
-    Button quit = new Button(this.centerX, this.centerY + 270, this.objWidth, this.objHeight, "End party", () -> Game.screen = new ScreenConfirmEndParty());
+    Button quit = new Button(this.centerX, this.centerY + 270, this.objWidth, this.objHeight, "Close Lobby", () -> Game.screen = new ScreenConfirmEndParty());
 
     Button toggleIP = new Button(-1000, -1000, this.objHeight, this.objHeight, "", () -> Game.showIP = !Game.showIP, "Toggle showing IP address");
 
@@ -111,14 +72,17 @@ public class ScreenPartyHost extends Screen
     {
         super(350, 40, 380, 60);
 
+        Game.disablePartyFriendlyFire = false;
+
         this.music = "menu_3.ogg";
         this.musicID = "menu";
         toggleIP.fullInfo = true;
 
         chatbox = new ChatBox(this.centerX, Drawing.drawing.interfaceSizeY - 30, Drawing.drawing.interfaceSizeX - 20, 40, Game.game.input.chat, () ->
         {
-            ScreenPartyHost.chat.add(0, new ChatMessage(Game.player, ScreenPartyHost.chatbox.inputText));
-            Game.eventsOut.add(new EventPlayerChat(Game.player, ScreenPartyHost.chatbox.inputText));
+            String s = "[SERVER]: " + ScreenPartyHost.chatbox.inputText;
+            ScreenPartyHost.chat.add(0, new ChatMessage(s));
+            Game.eventsOut.add(new EventChat(s));
         });
 
         if (Game.game.window.touchscreen)
@@ -192,12 +156,6 @@ public class ScreenPartyHost extends Screen
     @Override
     public void update()
     {
-        newLevel.update();
-        crusades.update();
-        myLevels.update();
-        versus.update();
-        minigames.update();
-        share.update();
         shared.update();
         options.update();
         partyOptions.update();
@@ -230,12 +188,6 @@ public class ScreenPartyHost extends Screen
 
         partyOptions.draw();
         options.draw();
-        myLevels.draw();
-        minigames.draw();
-        crusades.draw();
-        versus.draw();
-        newLevel.draw();
-        share.draw();
         shared.draw();
         quit.draw();
 
@@ -267,11 +219,12 @@ public class ScreenPartyHost extends Screen
         Drawing.drawing.setColor(0, 0, 0);
         Drawing.drawing.setInterfaceFontSize(this.textSize);
 
-        Drawing.drawing.displayInterfaceText(this.centerX + 190, this.centerY - 290, "Play:");
+        //Drawing.drawing.displayInterfaceText(this.centerX + 190, this.centerY - 290, "Uploaded Levels");
 
-        Drawing.drawing.displayInterfaceText(this.centerX + 190, this.centerY + 40, "Level and crusade sharing:");
+        Drawing.drawing.displayInterfaceText(this.centerX + 190, this.centerY - 180, "Players can use !play <opponent>");
+        Drawing.drawing.displayInterfaceText(this.centerX + 190, this.centerY - 150, "to start a match.");
 
-        Drawing.drawing.displayInterfaceText(this.centerX - 190, this.centerY - 280, "Players in this party:");
+        Drawing.drawing.displayInterfaceText(this.centerX - 190, this.centerY - 280, "Players in this lobby:");
 
         if (server != null && server.connections != null)
         {

@@ -69,7 +69,7 @@ public class Server
 
 	public void close()
 	{  
-		this.close("The host has ended the party");
+		this.close("The host has closed the lobby");
 	}
 	
 	public void close(String reason)

@@ -1,9 +1,13 @@
 package tanks.network;
 
 import io.netty.buffer.ByteBuf;
+import tanks.gui.screen.ScreenPartyHost;
+import tanks.network.event.EventChat;
+import tanks.network.event.INetworkEvent;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 public class NetworkUtils 
 {
@@ -35,5 +39,18 @@ public class NetworkUtils
 		
 		b.writeInt(s.length() + extra);
 		b.writeCharSequence(s, charset);
+	}
+
+	public static boolean sendEventToClient(INetworkEvent e, UUID clientId) {
+		for (int i = 0; i < ScreenPartyHost.server.connections.size(); i++) {
+			ServerHandler c = ScreenPartyHost.server.connections.get(i);
+			if (c.clientID == clientId) {
+				c.sendEvent(e);
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

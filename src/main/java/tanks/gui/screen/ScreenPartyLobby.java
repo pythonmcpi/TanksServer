@@ -62,9 +62,7 @@ public class ScreenPartyLobby extends Screen
 			300, 30, "Previous page", () -> usernamePage--
 	);
 
-	Button share = new Button(Drawing.drawing.interfaceSizeX / 2 + 190, Drawing.drawing.interfaceSizeY / 2 - 180, this.objWidth, this.objHeight, "Upload", () -> Game.screen = new ScreenShareSelect());
-
-	Button shared = new Button(Drawing.drawing.interfaceSizeX / 2 + 190, Drawing.drawing.interfaceSizeY / 2 - 120, this.objWidth, this.objHeight, "Download", () -> Game.screen = new ScreenSharedSummary(sharedLevels, sharedCrusades));
+	Button share = new Button(Drawing.drawing.interfaceSizeX / 2 + 190, Drawing.drawing.interfaceSizeY / 2 - 180, this.objWidth, this.objHeight, "Upload", () -> Game.screen = new ScreenShareLevel());
 
 	Button toggleIP = new Button(-1000, -1000, this.objHeight, this.objHeight, "", () -> Game.showIP = !Game.showIP, "Toggle showing IP address");
 
@@ -81,7 +79,7 @@ public class ScreenPartyLobby extends Screen
 			this.nextUsernamePage.update();
 
 		share.update();
-		shared.update();
+		//shared.update();
 		toggleIP.update();
 	}
 
@@ -131,7 +129,6 @@ public class ScreenPartyLobby extends Screen
 
 			exit.draw();
 			options.draw();
-			shared.draw();
 			share.draw();
 
 			if (connections != null)

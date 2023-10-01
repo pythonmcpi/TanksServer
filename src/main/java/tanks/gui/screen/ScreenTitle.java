@@ -392,7 +392,7 @@ public class ScreenTitle extends Screen implements ISeparateBackgroundScreen
 
 		Drawing.drawing.setColor(Turret.calculateSecondaryColor(Game.player.turretColorR), Turret.calculateSecondaryColor(Game.player.turretColorG), Turret.calculateSecondaryColor(Game.player.turretColorB));
 		Drawing.drawing.setInterfaceFontSize(this.titleSize);
-		Drawing.drawing.displayInterfaceText(this.lCenterX + 2, 2 + this.lCenterY - this.objYSpace * 2 / 9, "The Crusades");
+		Drawing.drawing.displayInterfaceText(this.lCenterX + 2, 2 + this.lCenterY - this.objYSpace * 2 / 9, "Fortress Wars");
 
 		Drawing.drawing.setColor(Game.player.colorR, Game.player.colorG, Game.player.colorB);
 		Drawing.drawing.setInterfaceFontSize(this.titleSize * 2.5);
@@ -400,7 +400,7 @@ public class ScreenTitle extends Screen implements ISeparateBackgroundScreen
 
 		Drawing.drawing.setColor(Game.player.turretColorR, Game.player.turretColorG, Game.player.turretColorB);
 		Drawing.drawing.setInterfaceFontSize(this.titleSize);
-		Drawing.drawing.displayInterfaceText(this.lCenterX, this.lCenterY - this.objYSpace * 2 / 9, "The Crusades");
+		Drawing.drawing.displayInterfaceText(this.lCenterX, this.lCenterY - this.objYSpace * 2 / 9, "Fortress Wars");
 
 //		for (int i = 0; i < Game.tracks.size(); i++)
 //		{

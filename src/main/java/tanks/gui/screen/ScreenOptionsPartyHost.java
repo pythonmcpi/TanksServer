@@ -89,10 +89,14 @@ public class ScreenOptionsPartyHost extends Screen
         else
             anticheat.setText(anticheatText, weakText);
 
+        Game.disablePartyFriendlyFire = false;
+
         if (Game.disablePartyFriendlyFire)
             disableFriendlyFire.setText(disableFriendlyFireText, disabledText);
         else
             disableFriendlyFire.setText(disableFriendlyFireText, defaultText);
+
+        disableFriendlyFire.enabled = false;
 
         timer = new TextBox(this.centerX, this.centerY - this.objYSpace, this.objWidth, this.objHeight, "Countdown time", () ->
         {

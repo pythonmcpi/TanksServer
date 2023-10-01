@@ -11,7 +11,7 @@ public class ScreenConfirmEndParty extends Screen
     public Button back = new Button(this.centerX, this.centerY + this.objYSpace * 2, this.objWidth, this.objHeight, "Back", () -> Game.screen = ScreenPartyHost.activeScreen
     );
 
-    public Button confirm = new Button(this.centerX, this.centerY + this.objYSpace, this.objWidth, this.objHeight, "End party", () ->
+    public Button confirm = new Button(this.centerX, this.centerY + this.objYSpace, this.objWidth, this.objHeight, "Close Lobby", () ->
     {
         Drawing.drawing.playSound("leave.ogg");
 
@@ -54,7 +54,7 @@ public class ScreenConfirmEndParty extends Screen
 
         Drawing.drawing.setColor(0, 0, 0);
         Drawing.drawing.setInterfaceFontSize(this.textSize);
-        Drawing.drawing.displayInterfaceText(this.centerX, this.centerY - this.objYSpace * 8 / 3, "Are you sure you want to end the party?");
+        Drawing.drawing.displayInterfaceText(this.centerX, this.centerY - this.objYSpace * 8 / 3, "Are you sure you want to close the lobby?");
 
         if (Crusade.currentCrusade != null)
         {
